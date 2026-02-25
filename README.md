@@ -74,3 +74,72 @@ collector/
 - `bun run db:studio`: Open database studio UI
 - `bun run db:local`: Start the local SQLite database
 - `bun run check`: Run Biome formatting and linting
+
+## Comment Scraper (Facebook, Instagram, YouTube, TikTok)
+
+The API now exposes `comments.scrapeComments` in tRPC:
+
+- Input: `{ platform, targetId, limit?, cursor? }`
+- Supported `platform` values: `facebook`, `instagram`, `youtube`, `tiktok`
+- Output: normalized comments array + `nextCursor`
+
+Example call from code:
+
+```ts
+const data = await trpc.comments.scrapeComments.query({
+  platform: "youtube",
+  targetId: "VIDEO_ID",
+  limit: 25,
+});
+```
+
+The scraper uses official platform APIs:
+
+- Facebook Graph API comments edge:
+  - https://developers.facebook.com/docs/graph-api/reference/object/comments/
+- Instagram Graph API media comments edge:
+  - https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-media/comments
+- YouTube Data API v3 `commentThreads.list`:
+  - https://developers.google.com/youtube/v3/docs/commentThreads/list
+- TikTok Research API video comment list:
+  - https://developers.tiktok.com/doc/research-api-specs-query-video-comments/
+
+## Environment Variables for Comment Scraper
+
+Create or update `apps/web/.env` (the API runs in the web app server process):
+
+```dotenv
+DATABASE_URL=file:../../local.db
+CORS_ORIGIN=http://localhost:3001
+NODE_ENV=development
+
+# Meta (Facebook + Instagram Graph API)
+FACEBOOK_GRAPH_API_VERSION=v23.0
+FACEBOOK_ACCESS_TOKEN=
+INSTAGRAM_ACCESS_TOKEN=
+
+# YouTube Data API v3
+YOUTUBE_API_KEY=
+
+# TikTok Research API
+TIKTOK_CLIENT_KEY=
+TIKTOK_CLIENT_SECRET=
+```
+
+How to obtain each variable from official docs:
+
+1. `FACEBOOK_ACCESS_TOKEN`
+   - Token guide: https://developers.facebook.com/docs/facebook-login/guides/access-tokens/
+   - Graph API overview: https://developers.facebook.com/docs/graph-api/overview
+   - You need an access token authorized to read comments on the target object.
+2. `INSTAGRAM_ACCESS_TOKEN`
+   - Instagram Graph API overview: https://developers.facebook.com/docs/instagram-platform/instagram-api-with-facebook-login/overview
+   - Media comments reference: https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-media/comments
+   - Use a token for an Instagram Professional account connected to a Facebook Page.
+3. `YOUTUBE_API_KEY`
+   - Enable and configure YouTube Data API: https://developers.google.com/youtube/registering_an_application
+   - Use API key with `commentThreads.list`: https://developers.google.com/youtube/v3/docs/commentThreads/list
+4. `TIKTOK_CLIENT_KEY` and `TIKTOK_CLIENT_SECRET`
+   - Client token flow: https://developers.tiktok.com/doc/client-access-token-management/
+   - Video comments endpoint: https://developers.tiktok.com/doc/research-api-specs-query-video-comments/
+   - TikTok comment collection requires Research API access approval.
