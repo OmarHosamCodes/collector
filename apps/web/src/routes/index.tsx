@@ -21,8 +21,26 @@ export const Route = createFileRoute("/")({
 		meta: [
 			{
 				title: "Collector | Scrapers",
+				description:
+					"Unified dashboard to collect, analyze, and visualize public comments from Facebook, Instagram, YouTube, and TikTok.",
+			},
+			{ property: "og:title", content: "Collector | Scrapers" },
+			{
+				property: "og:description",
+				content:
+					"Unified dashboard to collect, analyze, and visualize public comments from Facebook, Instagram, YouTube, and TikTok.",
+			},
+			{ property: "og:type", content: "website" },
+			{ property: "og:url", content: "https://collector.app/" },
+			{ name: "twitter:card", content: "summary_large_image" },
+			{ name: "twitter:title", content: "Collector | Scrapers" },
+			{
+				name: "twitter:description",
+				content:
+					"Unified dashboard to collect, analyze, and visualize public comments from Facebook, Instagram, YouTube, and TikTok.",
 			},
 		],
+		link: [{ rel: "canonical", href: "https://collector.app/" }],
 	}),
 	component: HomeComponent,
 });

@@ -1,12 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/compliance")({
+	head: () => ({
+		meta: [
+			{
+				title: "Product & Scope | Collector",
+				description:
+					"Overview of products and requested scopes used by Collector.",
+			},
+			{ property: "og:title", content: "Product & Scope | Collector" },
+			{
+				property: "og:description",
+				content: "Overview of products and requested scopes used by Collector.",
+			},
+			{ property: "og:type", content: "website" },
+			{ property: "og:url", content: "https://collector.app/compliance" },
+			{ name: "twitter:card", content: "summary_large_image" },
+			{ name: "twitter:title", content: "Product & Scope | Collector" },
+			{
+				name: "twitter:description",
+				content: "Overview of products and requested scopes used by Collector.",
+			},
+		],
+		link: [{ rel: "canonical", href: "https://collector.app/compliance" }],
+	}),
 	component: CompliancePage,
 });
 
 function CompliancePage() {
-	return (
-		<div className="container mx-auto max-w-5xl px-4 py-6">
+    return (
+        <>
+            <script type="application/ld+json">{JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Collector",
+                "url": "https://collector.app",
+                "logo": "https://collector.app/logo.png",
+            })}</script>
+            <div className="container mx-auto max-w-5xl px-4 py-6">
 			<h1 className="mb-2 font-semibold text-2xl">
 				Product and Scope Explanation
 			</h1>
@@ -87,7 +118,7 @@ function CompliancePage() {
 						</li>
 					</ul>
 				</section>
-			</div>
-		</div>
-	);
+            </div>
+      </>
+    );
 }

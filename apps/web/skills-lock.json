@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "SEO Optimizer": {
+      "source": "davila7/claude-code-templates",
+      "sourceType": "github",
+      "computedHash": "40f156d4e5f94c560128a46a5118170ad3515d7f12edbe80cfc461d9af46c606"
+    }
+  }
+}
